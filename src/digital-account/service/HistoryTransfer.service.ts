@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { TransferDto } from '../dto/Transfer.dto';
 import { Transfer } from '../interface/Transfer.interface';
 
 @Injectable()

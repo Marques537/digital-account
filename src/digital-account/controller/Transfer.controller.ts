@@ -1,20 +1,26 @@
-import { Body, Controller, Post, Get, Param } from '@nestjs/common';
+import { Body, Controller, Post, Get, Param, Inject } from '@nestjs/common';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
-import { ValidationPipe } from '../../validation/validation.pipe';
+import { TransferDto } from '../dto/Transfer.dto';
 import { TransferService } from '../service/CreateTransfer.service';
 import { HistoryTransferService } from '../service/HistoryTransfer.service';
-//o service vai retonar um transferDTO eu vou jogar ele na resposta do create
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 
 @Controller('transfer')
+@ApiTags('transfer')
 export class TransferController {
-  // constructor(private transferService: TransferService) {}
-  constructor(private historyTransferService: HistoryTransferService) {}
+  @Inject(TransferService)
+  private readonly transferService: TransferService;
+  @Inject(HistoryTransferService)
+  private readonly historyTransferService: HistoryTransferService;
 
-  // @Post()
-  // create(@Body(new ValidationPipe()) createTransferDto: CreateTransferDto) {
-  //   return this.transferService.create(createTransferDto);
-  // }
-  @Get(':document/history')
+  @Post()
+  create(@Body() createTransferDto: CreateTransferDto) {
+    return this.transferService.create(createTransferDto);
+  }
+  @Get(':document')
+  @ApiCreatedResponse({
+    type: TransferDto,
+  })
   findByDocument(@Param('document') document: string) {
     return this.historyTransferService.findByDocument(document);
   }

@@ -3,7 +3,7 @@ import { DigitalAccount } from '../interface/DigitalAccount.interface';
 import { CreateAccountDto } from '../dto/Create-DigitalAccount.dto';
 
 @Injectable()
-export class DigitalAccountService {
+export class CreateDigitalAccountService {
   private digitalAccounts: DigitalAccount[] = [];
 
   create(createDigitalAccount: CreateAccountDto) {

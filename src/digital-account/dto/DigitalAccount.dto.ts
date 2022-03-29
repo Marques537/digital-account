@@ -1,30 +1,25 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsCPF } from 'brazilian-class-validator';
-import { IsString, IsNumber, IsDate, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
 
-export class TransferDto {
+export class DigitalAccountDto {
   @ApiProperty()
   @IsNumber()
   id: number;
 
   @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  name: string;
+
+  @ApiProperty()
+  @IsString()
+  @IsNotEmpty()
+  @IsCPF()
+  document: string;
+
+  @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  value: number;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @IsCPF()
-  receiverDocument: string;
-
-  @ApiProperty()
-  @IsString()
-  @IsNotEmpty()
-  @IsCPF()
-  senderDocument: string;
-
-  @ApiProperty()
-  @IsDate()
-  dateTime: Date;
+  availableValue: number;
 }

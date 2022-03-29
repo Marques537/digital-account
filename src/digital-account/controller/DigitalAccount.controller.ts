@@ -1,14 +1,20 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
 import { CreateAccountDto } from '../dto/Create-DigitalAccount.dto';
-import { DigitalAccountService } from '../service/DigitalAccount.service';
-import { ValidationPipe } from '../../validation/validation.pipe';
+import { CreateDigitalAccountService } from '../service/CreateDigitalAccount.service';
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { DigitalAccountDto } from '../dto/DigitalAccount.dto';
 
 @Controller('digital-account')
+@ApiTags('digital-account')
 export class DigitalAccountController {
-  constructor(private digitalAccountService: DigitalAccountService) {}
+  @Inject(CreateDigitalAccountService)
+  private readonly createDigitalAccountService: CreateDigitalAccountService;
 
   @Post()
-  create(@Body(new ValidationPipe()) createAccountDto: CreateAccountDto) {
-    return this.digitalAccountService.create(createAccountDto);
+  @ApiCreatedResponse({
+    type: DigitalAccountDto,
+  })
+  create(@Body() createAccountDto: CreateAccountDto) {
+    return this.createDigitalAccountService.create(createAccountDto);
   }
 }
