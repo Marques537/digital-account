@@ -10,7 +10,7 @@ export class TransferDto {
   @ApiProperty()
   @IsNumber()
   @IsNotEmpty()
-  value: number;
+  availableValue: number;
 
   @ApiProperty()
   @IsString()

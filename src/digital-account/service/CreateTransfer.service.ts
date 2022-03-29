@@ -2,6 +2,7 @@ import { Injectable, BadRequestException } from '@nestjs/common';
 import { Transfer } from '../interface/Transfer.interface';
 import { DigitalAccount } from '../interface/DigitalAccount.interface';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
+import { TransferDto } from '../dto/Transfer.dto';
 
 @Injectable()
 export class TransferService {
@@ -11,13 +12,13 @@ export class TransferService {
   create(createTransfer: CreateTransferDto) {
     this.accounts.push({
       name: 'Matheus',
-      document: '123456789',
+      document: '958.754.690-30',
       availableValue: 10,
     });
 
     this.accounts.push({
       name: 'Luiza',
-      document: '423432',
+      document: '689.368.840-77',
       availableValue: 500,
     });
 
@@ -51,7 +52,8 @@ export class TransferService {
       dateTime: new Date(),
     };
     const id: number = this.transferences.push(transfer);
-    return { id, ...transfer } as Transfer;
+    const availableValue = senderAccount.availableValue - transfer.value;
+    return { id, availableValue, ...transfer } as TransferDto;
   }
   findByDocument(document: string) {
     this.transferences.push({
