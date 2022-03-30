@@ -1,6 +1,0 @@
-{
-  "type": "sqlite",
-  "database": "digital-account.sqlite",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": true
-}
