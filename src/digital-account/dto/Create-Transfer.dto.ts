@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsNumber, IsNotEmpty, MinLength } from 'class-validator';
 import { IsCPF } from 'brazilian-class-validator';
-
 export class CreateTransferDto {
   @ApiProperty()
   @IsString()

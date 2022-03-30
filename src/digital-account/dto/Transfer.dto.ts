@@ -1,30 +1,37 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsCPF } from 'brazilian-class-validator';
 import { IsString, IsNumber, IsDate, IsNotEmpty } from 'class-validator';
+import { Expose } from 'class-transformer';
 
 export class TransferDto {
   @ApiProperty()
-  @IsNumber()
+  @Expose()
   id: number;
 
   @ApiProperty()
-  @IsNumber()
+  @Expose()
   @IsNotEmpty()
   availableValue: number;
 
   @ApiProperty()
-  @IsString()
+  @Expose()
+  @IsNotEmpty()
+  value: number;
+
+  @ApiProperty()
+  @Expose()
   @IsNotEmpty()
   @IsCPF()
   receiverDocument: string;
 
   @ApiProperty()
-  @IsString()
+  @Expose()
   @IsNotEmpty()
   @IsCPF()
   senderDocument: string;
 
   @ApiProperty()
+  @Expose()
   @IsDate()
   dateTime: Date;
 }

@@ -13,9 +13,9 @@ import { DigitalAccountDto } from '../dto/DigitalAccount.dto';
 export class CreateDigitalAccountService {
   constructor(
     @InjectRepository(DigitalAccount)
-    private digitalAccountsRepository: Repository<DigitalAccountDto>,
+    private digitalAccountsRepository: Repository<DigitalAccount>,
   ) {}
-  async create(
+  async execute(
     createDigitalAccount: CreateAccountDto,
   ): Promise<DigitalAccount> {
     const createdAccount = await this.digitalAccountsRepository.findOne({
@@ -23,9 +23,7 @@ export class CreateDigitalAccountService {
     });
     if (!createdAccount) {
       try {
-        return (await this.digitalAccountsRepository.save(
-          createDigitalAccount,
-        )) as DigitalAccount;
+        return await this.digitalAccountsRepository.save(createDigitalAccount);
       } catch (err) {
         throw new InternalServerErrorException(err);
       }

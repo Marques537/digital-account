@@ -1,7 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsCPF } from 'brazilian-class-validator';
-import { IsString, IsNumber, IsNotEmpty, MinLength } from 'class-validator';
-
+import { IsString, IsNumber, IsNotEmpty, Length } from 'class-validator';
 export class CreateAccountDto {
   @ApiProperty()
   @IsString()
@@ -12,7 +11,7 @@ export class CreateAccountDto {
   @IsString()
   @IsNotEmpty()
   @IsCPF()
-  @MinLength(14)
+  @Length(14)
   document: string;
 
   @ApiProperty()

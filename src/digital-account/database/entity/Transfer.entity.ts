@@ -1,19 +1,35 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
+import { DigitalAccount } from '../entity/DigitalAccount.entity';
 @Entity()
 export class Transfer {
   @PrimaryGeneratedColumn()
   id: number;
 
+  @OneToOne(() => DigitalAccount, (account) => account.id)
   @Column()
-  senderDocument: string;
+  senderId: number;
 
   @Column()
-  receiverDocument: string;
+  receiverId: number;
 
   @Column()
   value: number;
 
   @Column()
   dateTime: Date;
+
+  @ManyToOne(() => DigitalAccount, (account) => account.transfersSent)
+  @JoinColumn({ name: 'senderId' })
+  senderDigitalAccount: DigitalAccount;
+
+  @ManyToOne(() => DigitalAccount, (account) => account.receivedTransfers)
+  @JoinColumn({ name: 'receiverId' })
+  receiverDigitalAccount: DigitalAccount;
 }
