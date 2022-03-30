@@ -1,27 +1,15 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { Transfer } from '../interface/Transfer.interface';
-import { DigitalAccount } from '../interface/DigitalAccount.interface';
+import { Transfer } from '../database/entity/Transfer.entity';
+import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
 import { TransferDto } from '../dto/Transfer.dto';
 
 @Injectable()
 export class TransferService {
-  private transferences: Transfer[] = [];
+  private transferences: CreateTransferDto[] = [];
   private accounts: DigitalAccount[] = [];
 
   create(createTransfer: CreateTransferDto) {
-    this.accounts.push({
-      name: 'Matheus',
-      document: '958.754.690-30',
-      availableValue: 10,
-    });
-
-    this.accounts.push({
-      name: 'Luiza',
-      document: '689.368.840-77',
-      availableValue: 500,
-    });
-
     const senderAccount = this.accounts.find(
       (account) => account.document === createTransfer.senderDocument,
     );
@@ -40,8 +28,8 @@ export class TransferService {
       (transfer) =>
         transfer.senderDocument === createTransfer.senderDocument &&
         transfer.receiverDocument === createTransfer.receiverDocument &&
-        transfer.value === createTransfer.value &&
-        transfer.dateTime <= new Date(), // adicionar checagem com base nos minutos
+        transfer.value === createTransfer.value,
+      //   transfer.dateTime <= new Date(), // adicionar checagem com base nos minutos
     );
     if (duplicateTransfer) {
       throw new BadRequestException('Transferencia duplicada');
@@ -56,38 +44,6 @@ export class TransferService {
     return { id, availableValue, ...transfer } as TransferDto;
   }
   findByDocument(document: string) {
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '23',
-      value: 100,
-      dateTime: new Date(),
-    });
-
-    this.transferences.push({
-      senderDocument: '23',
-      receiverDocument: '23',
-      value: 200,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '31',
-      receiverDocument: '23',
-      value: 100,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '33',
-      value: 140,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '93',
-      value: 100,
-      dateTime: new Date(),
-    });
-
     return this.transferences.filter(
       (transfer) =>
         transfer.senderDocument === document ||

@@ -1,10 +1,10 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { DigitalAccount } from '../interface/DigitalAccount.interface';
+import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateAccountDto } from '../dto/Create-DigitalAccount.dto';
 
 @Injectable()
 export class CreateDigitalAccountService {
-  private digitalAccounts: DigitalAccount[] = [];
+  private digitalAccounts: CreateAccountDto[] = [];
 
   create(createDigitalAccount: CreateAccountDto) {
     const createdAccount = this.digitalAccounts.find(

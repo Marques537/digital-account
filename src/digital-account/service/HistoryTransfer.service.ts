@@ -1,44 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { TransferDto } from '../dto/Transfer.dto';
-import { Transfer } from '../interface/Transfer.interface';
+import { Transfer } from '../database/entity/Transfer.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Connection, Repository } from 'typeorm';
 
 @Injectable()
 export class HistoryTransferService {
+  constructor(private connection: Connection) {}
+
   private transferences: Transfer[] = [];
 
   findByDocument(document: string) {
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '23',
-      value: 100,
-      dateTime: new Date(),
-    });
-
-    this.transferences.push({
-      senderDocument: '23',
-      receiverDocument: '23',
-      value: 200,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '31',
-      receiverDocument: '23',
-      value: 100,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '33',
-      value: 140,
-      dateTime: new Date(),
-    });
-    this.transferences.push({
-      senderDocument: '21',
-      receiverDocument: '93',
-      value: 100,
-      dateTime: new Date(),
-    });
-
     return this.transferences.filter(
       (transfer) =>
         transfer.senderDocument === document ||
