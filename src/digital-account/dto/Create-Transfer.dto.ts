@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNumber, IsNotEmpty } from 'class-validator';
+import { IsString, IsNumber, IsNotEmpty, MinLength } from 'class-validator';
 import { IsCPF } from 'brazilian-class-validator';
 
 export class CreateTransferDto {
@@ -7,12 +7,14 @@ export class CreateTransferDto {
   @IsString()
   @IsNotEmpty()
   @IsCPF()
+  @MinLength(14)
   senderDocument: string;
 
   @ApiProperty()
   @IsString()
   @IsNotEmpty()
   @IsCPF()
+  @MinLength(14)
   receiverDocument: string;
 
   @ApiProperty()

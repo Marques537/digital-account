@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Get, Param, Inject } from '@nestjs/common';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
+import { HistoryTransferDto } from '../dto/History-Transfer.dto';
 import { TransferDto } from '../dto/Transfer.dto';
 import { TransferService } from '../service/CreateTransfer.service';
 import { HistoryTransferService } from '../service/HistoryTransfer.service';
@@ -8,20 +9,26 @@ import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 @Controller('transfer')
 @ApiTags('transfer')
 export class TransferController {
-  @Inject(TransferService)
-  private readonly transferService: TransferService;
-  @Inject(HistoryTransferService)
-  private readonly historyTransferService: HistoryTransferService;
+  constructor(
+    @Inject(TransferService)
+    private readonly transferService: TransferService,
+    @Inject(HistoryTransferService)
+    private readonly historyTransferService: HistoryTransferService,
+  ) {}
 
   @Post()
-  create(@Body() createTransferDto: CreateTransferDto) {
-    return this.transferService.create(createTransferDto);
+  async create(
+    @Body() createTransferDto: CreateTransferDto,
+  ): Promise<TransferDto> {
+    return await this.transferService.create(createTransferDto);
   }
   @Get(':document')
   @ApiCreatedResponse({
-    type: TransferDto,
+    type: HistoryTransferDto,
   })
-  findByDocument(@Param('document') document: string) {
-    return this.historyTransferService.findByDocument(document);
+  async findByDocument(
+    @Param('document') document: string,
+  ): Promise<HistoryTransferDto[]> {
+    return await this.historyTransferService.findByDocument(document);
   }
 }

@@ -1,24 +1,38 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateAccountDto } from '../dto/Create-DigitalAccount.dto';
+import { DigitalAccountDto } from '../dto/DigitalAccount.dto';
 
 @Injectable()
 export class CreateDigitalAccountService {
-  private digitalAccounts: CreateAccountDto[] = [];
-
-  create(createDigitalAccount: CreateAccountDto) {
-    const createdAccount = this.digitalAccounts.find(
-      (Account) => Account.document === createDigitalAccount.document,
-    );
+  constructor(
+    @InjectRepository(DigitalAccount)
+    private digitalAccountsRepository: Repository<DigitalAccountDto>,
+  ) {}
+  async create(
+    createDigitalAccount: CreateAccountDto,
+  ): Promise<DigitalAccount> {
+    const createdAccount = await this.digitalAccountsRepository.findOne({
+      document: createDigitalAccount.document,
+    });
     if (!createdAccount) {
-      const id = this.digitalAccounts.push(createDigitalAccount);
-      return {
-        id: id,
-        ...createDigitalAccount,
-      } as DigitalAccount;
+      try {
+        return (await this.digitalAccountsRepository.save(
+          createDigitalAccount,
+        )) as DigitalAccount;
+      } catch (err) {
+        throw new InternalServerErrorException(err);
+      }
+    } else {
+      throw new ConflictException(
+        'There is already an account associated with the informed document.',
+      );
     }
-    throw new BadRequestException(
-      'There is already an account associated with the informed document.',
-    );
   }
 }

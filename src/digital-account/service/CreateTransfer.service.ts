@@ -1,53 +1,72 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  ConflictException,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { Transfer } from '../database/entity/Transfer.entity';
 import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { TransferDto } from '../dto/Transfer.dto';
 
 @Injectable()
 export class TransferService {
-  private transferences: CreateTransferDto[] = [];
-  private accounts: DigitalAccount[] = [];
+  constructor(
+    @InjectRepository(Transfer)
+    private transfersRepository: Repository<Transfer>,
+    @InjectRepository(DigitalAccount)
+    private accountRepository: Repository<DigitalAccount>,
+  ) {}
 
-  create(createTransfer: CreateTransferDto) {
-    const senderAccount = this.accounts.find(
-      (account) => account.document === createTransfer.senderDocument,
-    );
-    const receiverAccount = this.accounts.find(
-      (account) => account.document === createTransfer.receiverDocument,
-    );
+  async create(createTransfer: CreateTransferDto): Promise<TransferDto> {
+    let senderAccount = await this.accountRepository.findOne({
+      document: createTransfer.senderDocument,
+    });
+    const receiverAccount = await this.accountRepository.findOne({
+      document: createTransfer.receiverDocument,
+    });
 
-    if (!senderAccount || !receiverAccount) {
-      throw new BadRequestException('Alguma das contas não existe');
+    if (!senderAccount) {
+      throw new NotFoundException('senderAccount does not exist');
+    }
+    if (!receiverAccount) {
+      throw new NotFoundException('receiverAccount does not exist');
     }
     if (senderAccount.availableValue < createTransfer.value) {
-      throw new BadRequestException('Saldo insuficiente');
+      throw new ConflictException('insufficient funds');
     }
 
-    const duplicateTransfer = this.transferences.find(
-      (transfer) =>
-        transfer.senderDocument === createTransfer.senderDocument &&
-        transfer.receiverDocument === createTransfer.receiverDocument &&
-        transfer.value === createTransfer.value,
+    const duplicateTransfer = await this.transfersRepository.findOne(
+      { ...createTransfer },
       //   transfer.dateTime <= new Date(), // adicionar checagem com base nos minutos
     );
     if (duplicateTransfer) {
-      throw new BadRequestException('Transferencia duplicada');
+      throw new ConflictException('duplicate transfer');
     }
+    try {
+      //fazer tudo em uma transação
+      senderAccount = await this.accountRepository.save({
+        ...senderAccount,
+        availableValue: senderAccount.availableValue - createTransfer.value,
+      });
+      await this.accountRepository.save({
+        ...receiverAccount,
+        availableValue: receiverAccount.availableValue + createTransfer.value,
+      });
+      const createdTransfer = await this.transfersRepository.save({
+        ...createTransfer,
+        dateTime: new Date(),
+      });
 
-    const transfer = {
-      ...createTransfer,
-      dateTime: new Date(),
-    };
-    const id: number = this.transferences.push(transfer);
-    const availableValue = senderAccount.availableValue - transfer.value;
-    return { id, availableValue, ...transfer } as TransferDto;
-  }
-  findByDocument(document: string) {
-    return this.transferences.filter(
-      (transfer) =>
-        transfer.senderDocument === document ||
-        transfer.receiverDocument === document,
-    );
+      const response: TransferDto = {
+        ...createdTransfer,
+        availableValue: senderAccount.availableValue,
+      };
+      return response;
+    } catch (err) {
+      throw new InternalServerErrorException();
+    }
   }
 }

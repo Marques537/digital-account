@@ -7,14 +7,18 @@ import { DigitalAccountDto } from '../dto/DigitalAccount.dto';
 @Controller('digital-account')
 @ApiTags('digital-account')
 export class DigitalAccountController {
-  @Inject(CreateDigitalAccountService)
-  private readonly createDigitalAccountService: CreateDigitalAccountService;
+  constructor(
+    @Inject(CreateDigitalAccountService)
+    private readonly createDigitalAccountService: CreateDigitalAccountService,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
     type: DigitalAccountDto,
   })
-  create(@Body() createAccountDto: CreateAccountDto) {
-    return this.createDigitalAccountService.create(createAccountDto);
+  async create(
+    @Body() createAccountDto: CreateAccountDto,
+  ): Promise<CreateAccountDto> {
+    return await this.createDigitalAccountService.create(createAccountDto);
   }
 }

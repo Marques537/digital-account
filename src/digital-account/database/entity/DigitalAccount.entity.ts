@@ -5,10 +5,10 @@ export class DigitalAccount {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 200 })
+  @Column()
   name: string;
 
-  @Column()
+  @Column({ unique: true })
   document: string;
 
   @Column()
