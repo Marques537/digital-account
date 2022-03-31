@@ -32,4 +32,14 @@ export class Transfer {
   @ManyToOne(() => DigitalAccount, (account) => account.receivedTransfers)
   @JoinColumn({ name: 'receiverId' })
   receiverDigitalAccount: DigitalAccount;
+
+  constructor(transfer?: Partial<Transfer>) {
+    this.id = transfer?.id;
+    this.senderId = transfer?.senderId;
+    this.receiverId = transfer?.receiverId;
+    this.value = transfer?.value;
+    this.dateTime = transfer?.dateTime;
+    this.senderDigitalAccount = transfer?.senderDigitalAccount;
+    this.receiverDigitalAccount = transfer?.receiverDigitalAccount;
+  }
 }

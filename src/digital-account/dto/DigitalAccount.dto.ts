@@ -27,4 +27,11 @@ export class DigitalAccountDto {
   @IsNotEmpty()
   @Expose()
   availableValue: number;
+
+  constructor(digitalAccountDto?: Partial<DigitalAccountDto>) {
+    this.id = digitalAccountDto?.id;
+    this.name = digitalAccountDto?.name;
+    this.document = digitalAccountDto?.document;
+    this.availableValue = digitalAccountDto?.availableValue;
+  }
 }

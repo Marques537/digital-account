@@ -13,7 +13,7 @@ import { TransferDto } from '../dto/Transfer.dto';
 import * as dayjs from 'dayjs';
 
 @Injectable()
-export class TransferService {
+export class CreateTransferService {
   constructor(
     @InjectRepository(Transfer)
     private transfersRepository: Repository<Transfer>,

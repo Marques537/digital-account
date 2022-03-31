@@ -8,7 +8,7 @@ import { DigitalAccount } from './database/entity/DigitalAccount.entity';
 import { Transfer } from './database/entity/Transfer.entity';
 
 import { CreateDigitalAccountService } from './service/CreateDigitalAccount.service';
-import { TransferService } from './service/CreateTransfer.service';
+import { CreateTransferService } from './service/CreateTransfer.service';
 import { HistoryTransferService } from './service/HistoryTransfer.service';
 
 @Module({
@@ -16,7 +16,7 @@ import { HistoryTransferService } from './service/HistoryTransfer.service';
   controllers: [DigitalAccountController, TransferController],
   providers: [
     CreateDigitalAccountService,
-    TransferService,
+    CreateTransferService,
     HistoryTransferService,
   ],
 })

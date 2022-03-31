@@ -9,7 +9,6 @@ import { Serialize } from '../../interceptor/serialize.interceptor';
 @ApiTags('digital-account')
 export class DigitalAccountController {
   constructor(
-    @Inject(CreateDigitalAccountService)
     private readonly createDigitalAccountService: CreateDigitalAccountService,
   ) {}
 
@@ -20,7 +19,7 @@ export class DigitalAccountController {
   @Serialize(DigitalAccountDto)
   async create(
     @Body() createAccountDto: CreateAccountDto,
-  ): Promise<CreateAccountDto> {
+  ): Promise<DigitalAccountDto> {
     return await this.createDigitalAccountService.execute(createAccountDto);
   }
 }

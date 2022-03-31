@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateAccountDto } from '../dto/Create-DigitalAccount.dto';
-import { DigitalAccountDto } from '../dto/DigitalAccount.dto';
 
 @Injectable()
 export class CreateDigitalAccountService {
