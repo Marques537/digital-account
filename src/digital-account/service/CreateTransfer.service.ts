@@ -8,9 +8,11 @@ import { Transfer } from '../database/entity/Transfer.entity';
 import { DigitalAccount } from '../database/entity/DigitalAccount.entity';
 import { CreateTransferDto } from '../dto/Create-Transfer.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, Connection, MoreThan } from 'typeorm';
+import { Repository, Connection, MoreThanOrEqual } from 'typeorm';
 import { TransferDto } from '../dto/Transfer.dto';
 import * as dayjs from 'dayjs';
+import * as utc from 'dayjs/plugin/utc';
+dayjs.extend(utc);
 
 @Injectable()
 export class CreateTransferService {
@@ -44,12 +46,15 @@ export class CreateTransferService {
         'the destination and origin account are the same',
       );
     }
-    const date = dayjs(new Date()).subtract(2, 'minutes').toDate();
+    const date = dayjs(new Date())
+      .utc()
+      .subtract(2, 'minutes')
+      .format('YYYY-MM-DD HH:mm:ss.SSS');
     const duplicateTransfer = await this.transfersRepository.findOne({
       senderId: senderAccount.id,
       receiverId: receiverAccount.id,
       value: createTransfer.value,
-      dateTime: MoreThan(date),
+      dateTime: MoreThanOrEqual(date),
     });
     if (duplicateTransfer) {
       throw new ConflictException('duplicate transfer');
@@ -64,16 +69,16 @@ export class CreateTransferService {
       receiverAccount.availableValue =
         receiverAccount.availableValue + createTransfer.value;
 
-      await queryRunner.manager.save(senderAccount);
-      await queryRunner.manager.save(receiverAccount);
+      await this.accountRepository.save(senderAccount);
+      await this.accountRepository.save(receiverAccount);
 
       const transfer = new Transfer();
       transfer.senderId = senderAccount.id;
       transfer.receiverId = receiverAccount.id;
       transfer.value = createTransfer.value;
-      transfer.dateTime = new Date();
+      transfer.dateTime = dayjs(new Date()).toDate();
 
-      const createdTransfer = await queryRunner.manager.save(transfer);
+      const createdTransfer = await this.transfersRepository.save(transfer);
 
       const response: TransferDto = {
         id: createdTransfer.id,
