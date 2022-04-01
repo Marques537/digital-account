@@ -80,7 +80,7 @@ Rodando o projeto:
   npm run build
   ```
   
-  - Rodar testes:
+- Rodar testes:
 
   ```sh
   npm run test
