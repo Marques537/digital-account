@@ -45,7 +45,7 @@ Desafio de criação de uma API Rest de contas digitais que possua os seguintes 
 ### :wave: Pré-requisitos
 
 > [Node.js](http://nodejs.org/) \
-> [VS Code](https://code.visualstudio.com/) - Editor Code \
+> [VS Code](https://code.visualstudio.com/) \
 
 ### :rocket: Como rodar
 
@@ -84,7 +84,3 @@ Rodando o projeto:
 ## :information_source: Recomendações
 
 > [Insomnia](https://insomnia.rest/) - Para fazer requisições 
-
-## License
-
-Nest is [MIT licensed](LICENSE).
