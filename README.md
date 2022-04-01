@@ -1,4 +1,4 @@
-# Calindra Challenge API
+# Digitl Account API
 
 <div align="center">
  <a href="https://www.ume.com.br/">
