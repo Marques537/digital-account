@@ -1,4 +1,4 @@
-# Digitl Account API
+# Digital Account API
 
 <div align="center">
  <a href="https://www.ume.com.br/">
