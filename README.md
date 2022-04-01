@@ -79,6 +79,12 @@ Rodando o projeto:
   ```sh
   npm run build
   ```
+  
+  - Rodar testes:
+
+  ```sh
+  npm run test
+  ```
 
 
 ## :information_source: Recomendações
