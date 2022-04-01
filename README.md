@@ -24,7 +24,7 @@
 
 ## :page_with_curl: Introdução
 
-Desafio de criação de uma API Rest de contas digitais que possua os seguintes recuros. 
+Desafio de criação de uma API Rest de contas digitais que possua os seguintes recursos. 
 
 | Method   | Endpoint                                            | Description                                                                            |
 | -------- | --------------------------------------------------- | -------------------------------------------------------------------------------------- |
@@ -34,8 +34,8 @@ Desafio de criação de uma API Rest de contas digitais que possua os seguintes 
 | **GET**  | /swagger                                      | Retorna documentação no swagger                                        |
 
 - [Dotenv](https://www.npmjs.com/package/dotenv): para variável de ambiente;
-- [Nest](https://www.npmjs.com/package/@nestjs/cli): framework para Node.js que fornece recursos robustos para criação de API;
-- [brazilian-class-validator](https://www.npmjs.com/package/brazilian-class-validator): para validação de CPF por meio de Decorator;
+- [Nest](https://www.npmjs.com/package/@nestjs/cli): framework para Node.js que fornece recursos robustos para criação de APIs;
+- [brazilian-class-validator](https://www.npmjs.com/package/brazilian-class-validator): para validação de CPF por meio de Decorators;
 - [class-validator](https://www.npmjs.com/package/class-validator): para validação de conteúdo de properties de classes no projeto;
 - [dayjs](https://www.npmjs.com/package/dayjs) : para manipulação de datas;
 - [sqlite3](https://www.npmjs.com/package/sqlite3): banco de dados;
