@@ -45,7 +45,7 @@ Desafio de criação de uma API Rest de contas digitais que possua os seguintes 
 ### :wave: Pré-requisitos
 
 > [Node.js](http://nodejs.org/) \
-> [VS Code](https://code.visualstudio.com/) \
+> [VS Code](https://code.visualstudio.com/)
 
 ### :rocket: Como rodar
 
